@@ -1,11 +1,11 @@
-# CYBER-CONTROL // Touchscreen Laser & Audio OSC Interface
+# Touchscreen Laser & Audio OSC Interface
 > **PROTOTYPE VERSION 1**
 
 A minimalist, high-contrast touchscreen interface and low-latency Node.js OSC bridge that simultaneously controls **MadMapper** (Lasers) and **Ableton Live** (Audio) over local network and Wi-Fi.
 
 ---
 
-## 🌟 Prototype Version 1 Overview
+## Prototype Version 1 Overview
 
 This prototype is designed specifically for performance environments where operators need simple, intuitive, non-technical touch controls to manipulate laser visuals and music effects simultaneously.
 
@@ -23,7 +23,7 @@ This prototype is designed specifically for performance environments where opera
 
 ---
 
-## 🎛️ Control Routing Matrix
+## Control Routing Matrix
 
 | Touchscreen Control | Keyboard Shortcut | MadMapper OSC (`127.0.0.1:8000`) | Ableton Live OSC (`172.20.10.8:11000`) |
 | :--- | :--- | :--- | :--- |
@@ -34,7 +34,7 @@ This prototype is designed specifically for performance environments where opera
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Installation & Quick Start
 ```bash
