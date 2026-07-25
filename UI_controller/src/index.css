@@ -1,0 +1,278 @@
+:root {
+  /* Full-Screen Chassis Surface */
+  --bg-surface: #d8d8d6;
+  --track-inset-bg: #b8b8b5;
+  
+  --text-label: #666664;
+  --text-primary: #2b2b29;
+  
+  /* Accent Colors */
+  --color-freq-yellow: #facc15;
+  --color-level-blue: #3b82f6;
+  
+  /* Status LEDs */
+  --led-amber: #f59e0b;
+  --led-grey: #888885;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Main App Container - Edge-to-Edge Touch Screen Canvas */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 40px 60px 20px 60px;
+  gap: 16px;
+  background-color: var(--bg-surface);
+  position: relative;
+}
+
+/* Top Utility Bar for Kiosk Fullscreen */
+.utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.btn-utility {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-label);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-utility:active {
+  background: rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+}
+
+/* Main Touch Controls Layout (Clean 2-Column Grid) */
+.touch-surface-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Sliders Bank Column */
+.sliders-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sliders-group {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+  gap: 32px;
+}
+
+.slider-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  gap: 16px;
+}
+
+/* Deep Recessed Pill Track carved directly into screen */
+.track-recess {
+  width: 76px;
+  flex: 1;
+  background: var(--track-inset-bg);
+  border-radius: 38px;
+  position: relative;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 
+    inset 5px 5px 12px rgba(0, 0, 0, 0.22),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  touch-action: none;
+  cursor: pointer;
+}
+
+.track-line {
+  position: absolute;
+  top: 27px;
+  bottom: 27px;
+  width: 5px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Perfectly Circular Handles */
+.circular-knob {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  box-shadow: 
+    3px 5px 12px rgba(0, 0, 0, 0.2),
+    -2px -2px 6px rgba(255, 255, 255, 0.8);
+  touch-action: none;
+}
+
+.knob-freq {
+  background: linear-gradient(145deg, #fde047, #facc15);
+}
+
+.knob-level {
+  background: linear-gradient(145deg, #60a5fa, #3b82f6);
+}
+
+/* Fixed height label tag to prevent layout shift */
+.label-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.value-display {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-label);
+  font-weight: 500;
+  display: inline-block;
+  width: 38px;
+  text-align: left;
+}
+
+/* Switches Panel Column */
+.buttons-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.toggles-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 32px;
+}
+
+/* Tactile Block Buttons floating directly on the screen surface */
+.toggle-btn {
+  flex: 1;
+  background: linear-gradient(145deg, #e4e4e2, #cccccc);
+  border-radius: 18px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    6px 6px 16px rgba(0, 0, 0, 0.12),
+    -5px -5px 12px rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.toggle-btn:active, .toggle-btn.on {
+  box-shadow: 
+    inset 4px 4px 10px rgba(0, 0, 0, 0.2),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.5);
+  transform: scale(0.995);
+}
+
+.button-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+/* Integrated Status LED Dot */
+.status-led {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.status-led.on {
+  background: var(--led-amber);
+  box-shadow: 0 0 10px var(--led-amber);
+}
+
+.status-led.off {
+  background: var(--led-grey);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Developer Telemetry Log */
+.dev-log-container {
+  height: 54px;
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #444;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dev-log-entry {
+  opacity: 0.9;
+}
+

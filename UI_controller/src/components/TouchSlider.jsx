@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-export default function TouchSlider({ label, value, onChange }) {
+export default function TouchSlider({ label, value, onChange, colorClass }) {
   const [val, setVal] = useState(value);
   const trackRef = useRef(null);
   const isDragging = useRef(false);
@@ -19,10 +19,18 @@ export default function TouchSlider({ label, value, onChange }) {
     const track = trackRef.current;
     if (!track) return;
     const rect = track.getBoundingClientRect();
+    
+    const knobRadius = 27; // Half of 54px circular knob height
+    const minCenterY = knobRadius;
+    const maxCenterY = rect.height - knobRadius;
+
+    const relativeY = e.clientY - rect.top;
+    const clampedY = Math.max(minCenterY, Math.min(maxCenterY, relativeY));
+    
     // Calculate 0.0 (bottom) to 1.0 (top)
-    const rawVal = 1 - (e.clientY - rect.top) / rect.height;
-    const clamped = Math.max(0, Math.min(1, rawVal));
-    const rounded = parseFloat(clamped.toFixed(3));
+    const travelRange = maxCenterY - minCenterY;
+    const rawVal = travelRange > 0 ? 1 - (clampedY - minCenterY) / travelRange : 0.5;
+    const rounded = parseFloat(Math.max(0, Math.min(1, rawVal)).toFixed(3));
 
     setVal(rounded);
     latestVal.current = rounded;
@@ -51,28 +59,31 @@ export default function TouchSlider({ label, value, onChange }) {
   const handlePointerUp = (e) => {
     if (isDragging.current) {
       isDragging.current = false;
-      // Send final crisp value
       onChange(latestVal.current);
     }
   };
 
   return (
-    <div className="slider-column">
-      <div className="slider-value-badge">{(val * 100).toFixed(0)}%</div>
+    <div className="slider-unit">
       <div 
         ref={trackRef}
-        className="slider-track"
+        className="track-recess"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       >
+        <div className="track-line" />
         <div 
-          className="slider-fill" 
-          style={{ height: `${val * 100}%` }} 
+          className={`circular-knob ${colorClass || ''}`} 
+          style={{ top: `calc(27px + ${(1 - val)} * (100% - 54px))` }} 
         />
       </div>
-      <div className="slider-title">{label}</div>
+      <div className="label-tag">
+        {label} <span className="value-display">{(val * 100).toFixed(0)}%</span>
+      </div>
     </div>
   );
 }
+
+
